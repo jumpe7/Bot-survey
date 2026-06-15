@@ -1,29 +1,32 @@
-from os import getenv
-
 import asyncio
-from aiogram import Bot, Dispatcher, F, Router
-from aiogram.filters.command import CommandStart
-from aiogram.types import Message, ReplyKeyboardRemove
-from dotenv import load_dotenv
 
-user = Router()
-@user.message(CommandStart())
-async def cmd_comand(message: Message, state: FSMContext):
-    await message.answer('Добро пожаловать в бота!\n\nВведите ваше имя:',
-                         reply_markup=ReplyKeyboardRemove())
-    await state.set_state(Reg.name)
+from os import getenv
+from dotenv import load_dotenv
+from aiogram import Bot, Dispatcher
+from aiogram.filters import CommandStart
+from aiogram.types import Message
+from aiogram.client.session.aiohttp import AiohttpSession
+
+
+dp = Dispatcher()
+
+@dp.message(CommandStart())
+async def start(message: Message):
+    await message.answer(f'Привет, {message.from_user.first_name}!')
+
+@dp.message()
+async def echo_handler(message: Message):
+    try:
+        await message.send_copy(chat_id=message.chat.id)
+    except TypeError:
+        await message.answer('Хорошая попытка')
 
 async def main():
     load_dotenv()
-    tg_tok = getenv('TOKEN')
-    bot = Bot(token = tg_tok)
-    db = Dispatcher()
-    db.include_router(user)
-    await db.start_polling(bot)
+    tg_tok = getenv("TOKEN")
+    bot = Bot(token=tg_tok, session=session)
+    print('Бот запущен!')
+    await dp.start_polling(bot)
 
 if __name__ == "__main__":
-    try:
-        import asyncio
-        asyncio.run(main())
-    except KeyboardInterrupt:
-        pass
+    asyncio.run(main())
