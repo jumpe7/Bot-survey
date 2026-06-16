@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy import (Column, BigInteger, Text, DateTime)
+from sqlalchemy import (Column, BigInteger, Text, DateTime, func)
 
 class Base(DeclarativeBase):
     pass
@@ -9,9 +9,9 @@ class Base(DeclarativeBase):
 class User(Base):
     __tablename__ = 'users'
     telegram_id = Column(BigInteger, primary_key=True)
-    username = Column(Text, nullable=False)
+    username = Column(Text, nullable=True)
 
-    created_at = Column(DateTime, nullable=False)
+    created_at = Column(DateTime, default=func.now(), nullable=False)
 
 class AnonymousMessage(Base):
     __tablename__ = 'anonymous_messages'
