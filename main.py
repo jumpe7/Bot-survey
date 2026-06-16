@@ -23,7 +23,7 @@ async def main():
     dp.include_router(send_message_router)
 
     print('Bot started')
-    await dp.start_polling()
+    await dp.start_polling(bot)
 
 if __name__ == '__main__':
     asyncio.run(main())
