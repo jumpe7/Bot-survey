@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 load_dotenv()
 PG_URL = os.getenv("DB_URL")
 
-engine = create_async_engine(PG_URL, connect_args={"ssl": "require"})
+engine = create_async_engine(PG_URL, connect_args={"ssl": "require"}, echo=True)
 
 Session = async_sessionmaker(engine, expire_on_commit=False)
 

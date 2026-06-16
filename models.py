@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy import (Column, BigInteger, Text, DATETIME, Integer, ForeignKey)
+from sqlalchemy import (Column, BigInteger, Text, DateTime)
 
 class Base(DeclarativeBase):
     pass
@@ -11,7 +11,7 @@ class User(Base):
     telegram_id = Column(BigInteger, primary_key=True)
     username = Column(Text, nullable=False)
 
-    created_at = Column(DATETIME, nullable=False)
+    created_at = Column(DateTime, nullable=False)
 
 class AnonymousMessage(Base):
     __tablename__ = 'anonymous_messages'
@@ -23,5 +23,5 @@ class AnonymousMessage(Base):
     receiver_id = Column(BigInteger, nullable=False, index=True)
 
     text = Column(Text, nullable=False)
-    created_at = Column(DATETIME, nullable=False, index=True)
+    created_at = Column(DateTime, nullable=False, index=True)
 
